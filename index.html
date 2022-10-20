@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head>
+        <style>
+            .grid {
+                position: relative;
+                width: 400px;
+                aspect-ratio: 1/1;
+                outline: 1px solid black;
+                user-select: none;
+                background-color: lightgray;
+            }
+            .tile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: beige;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 25%;
+                height: 25%;
+                border: 1px solid black;
+                box-sizing: border-box;
+                transition: transform ease 0.2s;
+                transform: translate(calc(var(--x) * 100%), calc(var(--y) * 100%));
+            }
+            .tile[data-n="0"] {
+                border: none;
+                opacity: 0;
+            }
+        </style>
+    
+<link rel="preload" href="/15/gem-puzzle-50cbc4f555168ea7_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/15/gem-puzzle-50cbc4f555168ea7.js"></head>
+    <body>
+
+<script type="module">import init from '/15/gem-puzzle-50cbc4f555168ea7.js';init('/15/gem-puzzle-50cbc4f555168ea7_bg.wasm');</script></body></html>
