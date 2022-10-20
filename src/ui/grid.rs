@@ -45,7 +45,7 @@ impl Component for Grid {
                     data-n={n.to_string()}
                     class="tile"
                     // style={ format!("transform: translate({}%, {}%); transition: transform ease 0.2s", x*100, y*100) }
-                    style={ format!("--x: {}; --y: {}; --s: {}", x, y, size) }
+                    style={ format!("--x: {}; --y: {}", x, y) }
                     onclick={ctx.props().on_tile_click.reform(move |_| i)}
                 >
                     { n.to_string() }
@@ -54,7 +54,7 @@ impl Component for Grid {
         }).collect();
 
         return html! {
-            <div class="grid" style="">{ tiles }</div>
+            <div class="grid" style={format!("--s: {}", size)}>{ tiles }</div>
         };
     }
 }

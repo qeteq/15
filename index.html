@@ -4,26 +4,33 @@
         <style>
             .grid {
                 position: relative;
-                width: 400px;
+                width: calc(var(--s) * 100px);
                 aspect-ratio: 1/1;
                 outline: 1px solid black;
                 user-select: none;
                 background-color: lightgray;
+                transform-origin: top left;
+                transform: scale(calc(4 / var(--s)));
+                box-shadow: inset 2px 2px 8px #0009;
             }
             .tile {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background-color: beige;
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: calc(100% / var(--s));
-                height: calc(100% / var(--s));
-                border: 1px solid black;
                 box-sizing: border-box;
+                width: 100px;
+                height: 100px;
+                border: 1px solid black;
+                font-size: 40px;
+                font-family: sans-serif;
+                background-color: beige;
                 transition: transform ease 0.2s;
-                transform: translateX(calc(var(--x) * 100%)) translateY(calc(var(--y) * 100%)) scale(0.95) translateZ(0);
+                transform: translateX(calc(var(--x) * 100%)) translateY(calc(var(--y) * 100%)) scale(0.95);
+                border-radius: 4px;
+                box-shadow: 1px 1px 4px #0009;
             }
             .tile[data-n="0"] {
                 border: none;

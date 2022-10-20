@@ -52,7 +52,7 @@ impl Grid {
         let len = self.tiles.len();
         self.reset_tiles();
         let mut swaps = 0;
-        while swaps < len * 50 {
+        while swaps < len * 10 {
             let i = rand::random::<usize>() % (len - 1);
             let j = rand::random::<usize>() % (len - 1);
             if self.swap(i, j) {
