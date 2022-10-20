@@ -43,6 +43,7 @@ dependencies = [
  "getrandom",
  "num",
  "rand",
+ "web-sys",
  "yew",
 ]
 

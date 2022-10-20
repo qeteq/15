@@ -18,12 +18,12 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 25%;
-                height: 25%;
+                width: calc(100% / var(--s));
+                height: calc(100% / var(--s));
                 border: 1px solid black;
                 box-sizing: border-box;
                 transition: transform ease 0.2s;
-                transform: translate(calc(var(--x) * 100%), calc(var(--y) * 100%));
+                transform: translateX(calc(var(--x) * 100%)) translateY(calc(var(--y) * 100%)) scale(0.95) translateZ(0);
             }
             .tile[data-n="0"] {
                 border: none;

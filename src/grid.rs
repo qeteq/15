@@ -1,4 +1,4 @@
-use std::{ops::RangeInclusive, cmp::Ordering};
+use std::cmp::Ordering;
 
 pub struct Grid {
     size: usize,
