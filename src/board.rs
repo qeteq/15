@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
-use crate::grid::Grid;
 use crate::game_field::GameField;
+use crate::grid::Grid;
 
 type MovesCount = u32;
 
@@ -19,7 +19,7 @@ pub struct Board {
 pub struct Props {
     pub size: usize,
     pub onwin: Callback<MovesCount>,
-    pub onexit: Callback<()>
+    pub onexit: Callback<()>,
 }
 
 impl Component for Board {

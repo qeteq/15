@@ -39,7 +39,17 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                text-align: center
+                text-align: center;
+                background: url('https://media.tenor.com/WHyUIiHwjXIAAAAC/vat-cat.gif')
+                    center center no-repeat;
+                background-size: 500px 500px;
+            }
+            .game-win h1 {
+                font-size: 60px;
+                font-weight: bold;
+                color: white;
+                -webkit-text-stroke: 3px #000;
+                text-stroke: 3px #000;
             }
             .grid {
                 position: relative;
@@ -53,6 +63,7 @@
                 box-shadow: inset 2px 2px 8px #0009;
             }
             .tile {
+                --size: 100px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -60,17 +71,26 @@
                 left: 0;
                 top: 0;
                 box-sizing: border-box;
-                width: 100px;
-                height: 100px;
+                width: var(--size);
+                height: var(--size);
                 border: 1px solid black;
-                font-size: 40px;
-                background-color: beige;
+                font-size: 60px;
+                background: url('https://media.tenor.com/WHyUIiHwjXIAAAAC/vat-cat.gif');
+                background-size: calc(var(--s) * var(--size))
+                    calc(var(--s) * var(--size));
+                background-position: calc(-1 * var(--size) * var(--nx) - 1px)
+                    calc(-1 * var(--size) * var(--ny) - 1px);
+                font-weight: bold;
+                color: white;
+                -webkit-text-stroke: 3px #000;
+                text-stroke: 3px #000;
                 transition: transform ease 0.2s;
-                transform: translateX(calc(var(--x) * 100%)) translateY(calc(var(--y) * 100%)) scale(0.95);
+                transform: translateX(calc(var(--x) * 100%))
+                    translateY(calc(var(--y) * 100%)) scale(0.95);
                 border-radius: 4px;
                 box-shadow: 1px 1px 4px #0009;
             }
-            .tile[data-n="0"] {
+            .tile[data-n='0'] {
                 border: none;
                 opacity: 0;
             }

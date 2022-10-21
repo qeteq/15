@@ -1,13 +1,13 @@
 #![feature(array_windows)]
 #![feature(is_sorted)]
 
+use board::Board;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
-use board::Board;
 
-mod grid;
 mod board;
 mod game_field;
+mod grid;
 
 enum GameStatus {
     InMenu,
@@ -51,8 +51,12 @@ fn app() -> Html {
             let parsed = target.value().parse::<usize>();
 
             if let Ok(mut size) = parsed {
-                if size > 8 { size = 8 }
-                if size < 3 { size = 3 }
+                if size > 8 {
+                    size = 8
+                }
+                if size < 3 {
+                    size = 3
+                }
                 game_size.set(size);
             }
         })
@@ -92,7 +96,6 @@ fn app() -> Html {
             }
         }
     }
-
 }
 
 fn main() {

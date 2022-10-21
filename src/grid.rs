@@ -14,9 +14,15 @@ fn range_inclusive(from: usize, to: usize) -> Vec<usize> {
 }
 
 fn tile_cmp(&a: &usize, &b: &usize) -> Option<Ordering> {
-    if a == b { return Some(Ordering::Equal) }
-    if a == 0 { return Some(Ordering::Greater) }
-    if b == 0 { return Some(Ordering::Less) }
+    if a == b {
+        return Some(Ordering::Equal);
+    }
+    if a == 0 {
+        return Some(Ordering::Greater);
+    }
+    if b == 0 {
+        return Some(Ordering::Less);
+    }
     return Some(a.cmp(&b));
 }
 

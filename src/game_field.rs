@@ -28,29 +28,36 @@ fn sorted_tiles_by_value<'a>(tiles: &'a Vec<usize>) -> Vec<(usize, &'a usize)> {
 
 #[function_component(GameField)]
 pub fn game_field(props: &Props) -> Html {
-        let pairs = sorted_tiles_by_value(&props.tiles);
-        let size = props.size;
-        let tiles: Html = pairs
-            .iter()
-            .map(|&(i, n)| {
-                let x = i % size;
-                let y = i / size;
-                html! {
-                    <div
-                        key={format!("{}-{}", size, n)}
-                        data-n={n.to_string()}
-                        class="tile"
-                        // style={ format!("transform: translate({}%, {}%); transition: transform ease 0.2s", x*100, y*100) }
-                        style={ format!("--x: {}; --y: {}", x, y) }
-                        onclick={props.on_tile_click.reform(move |_| i)}
-                    >
-                        { n.to_string() }
-                    </div>
-                }
-            })
-            .collect();
+    let pairs = sorted_tiles_by_value(&props.tiles);
+    let size = props.size;
+    let tiles: Html = pairs
+        .iter()
+        .map(|&(i, n)| {
+            let x = i % size;
+            let y = i / size;
+            let nx = match n {
+                0 => size,
+                n => (n - 1) % size,
+            };
+            let ny = match n {
+                0 => size,
+                n => (n - 1) / size,
+            };
+            html! {
+                <div
+                    key={format!("{}-{}", size, n)}
+                    data-n={n.to_string()}
+                    class="tile"
+                    style={ format!("--x: {}; --y: {}; --nx: {}; --ny: {}", x, y, nx, ny) }
+                    onclick={props.on_tile_click.reform(move |_| i)}
+                >
+                    { n.to_string() }
+                </div>
+            }
+        })
+        .collect();
 
-        return html! {
-            <div class="grid" style={format!("--s: {}", size)}>{ tiles }</div>
-        };
+    return html! {
+        <div class="grid" style={format!("--s: {}", size)}>{ tiles }</div>
+    };
 }
