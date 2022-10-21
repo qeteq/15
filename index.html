@@ -1,27 +1,64 @@
 <!DOCTYPE html><html lang="en"><head>
         <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                font-family: sans-serif;
+            }
+            .game {
+                width: 500px;
+                min-height: 540px;
+                border: 2px solid wheat;
+                padding: 46px;
+                margin: 40px auto;
+            }
+            .game-menu {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+                gap: 0.5em;
+            }
+            .game-menu button {
+                padding: 0.25em 0.5em;
+                font-size: 100%;
+            }
+            .game-menu input {
+                padding: 0 0 0 0.5em;
+                line-height: 1.5em;
+                font-size: 100%;
+            }
             .grid {
                 position: relative;
-                width: 400px;
+                width: calc(var(--s) * 100px);
                 aspect-ratio: 1/1;
                 outline: 1px solid black;
                 user-select: none;
                 background-color: lightgray;
+                transform-origin: top left;
+                transform: scale(calc(4 / var(--s)));
+                box-shadow: inset 2px 2px 8px #0009;
             }
             .tile {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background-color: beige;
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 25%;
-                height: 25%;
-                border: 1px solid black;
                 box-sizing: border-box;
+                width: 100px;
+                height: 100px;
+                border: 1px solid black;
+                font-size: 40px;
+                background-color: beige;
                 transition: transform ease 0.2s;
-                transform: translate(calc(var(--x) * 100%), calc(var(--y) * 100%));
+                transform: translateX(calc(var(--x) * 100%)) translateY(calc(var(--y) * 100%)) scale(0.95);
+                border-radius: 4px;
+                box-shadow: 1px 1px 4px #0009;
             }
             .tile[data-n="0"] {
                 border: none;
@@ -29,8 +66,8 @@
             }
         </style>
     
-<link rel="preload" href="/15/gem-puzzle-50cbc4f555168ea7_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/15/gem-puzzle-50cbc4f555168ea7.js"></head>
+<link rel="preload" href="/15/gem-puzzle-c60244f6235d9523_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/15/gem-puzzle-c60244f6235d9523.js"></head>
     <body>
 
-<script type="module">import init from '/15/gem-puzzle-50cbc4f555168ea7.js';init('/15/gem-puzzle-50cbc4f555168ea7_bg.wasm');</script></body></html>
+<script type="module">import init from '/15/gem-puzzle-c60244f6235d9523.js';init('/15/gem-puzzle-c60244f6235d9523_bg.wasm');</script></body></html>
