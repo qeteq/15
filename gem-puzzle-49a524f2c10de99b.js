@@ -561,8 +561,8 @@ function getImports() {
         const ret = wasm.memory;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper416 = function(arg0, arg1, arg2) {
-        const ret = makeClosure(arg0, arg1, 172, __wbg_adapter_24);
+    imports.wbg.__wbindgen_closure_wrapper418 = function(arg0, arg1, arg2) {
+        const ret = makeClosure(arg0, arg1, 174, __wbg_adapter_24);
         return addHeapObject(ret);
     };
 
@@ -601,7 +601,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('gem-puzzle-c60244f6235d9523_bg.wasm', import.meta.url);
+        input = new URL('gem-puzzle-49a524f2c10de99b_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
