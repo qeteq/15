@@ -42,14 +42,6 @@ impl Grid {
         self.tiles.is_sorted_by(tile_cmp)
     }
 
-    pub fn value_sorted_pairs(&self) -> Vec<(usize, &usize)> {
-        let mut pairs: Vec<_> = self.tiles.iter().enumerate().collect();
-        pairs.sort_by(|&(_, a), &(_, b)| {
-            return tile_cmp(a, b).unwrap_or(Ordering::Equal)
-        });
-        return pairs;
-    }
-
     pub fn size(&self) -> usize {
         self.size
     }
@@ -90,10 +82,6 @@ impl Grid {
             }
         }
         return self.index_position(zero_index);
-    }
-
-    pub fn move_by_pos(&mut self, x: usize, y: usize) -> bool {
-        return self.r#move(x + y * self.size);
     }
 
     pub fn r#move(&mut self, from: usize) -> bool {
@@ -151,13 +139,6 @@ impl Grid {
 #[cfg(test)]
 mod tests {
     use super::Grid;
-
-    #[test]
-    fn test() {
-        let xy = 1..10;
-        let x: Vec<_> = (10..=1).collect();
-        println!("x = {:?}", x);
-    }
 
     #[test]
     fn build_1() {
@@ -305,80 +286,5 @@ mod tests {
             g.tiles,
             vec![5, 1, 2, 3, 9, 6, 7, 4, 13, 10, 11, 8, 14, 15, 12, 0]
         );
-    }
-
-    #[test]
-    #[rustfmt::skip]
-    fn move_by_pos() {
-        let mut g = Grid::new(4);
-
-        assert!(g.move_by_pos(3, 0));
-        assert_eq!(g.tiles, vec![
-            1,  2,  3,  0,
-            5,  6,  7,  4,
-            9,  10, 11, 8,
-            13, 14, 15, 12
-        ]);
-
-        assert!(g.move_by_pos(0, 0));
-        assert_eq!(g.tiles, vec![
-            0,  1,  2,  3,
-            5,  6,  7,  4,
-            9,  10, 11, 8,
-            13, 14, 15, 12
-        ]);
-
-        assert!(g.move_by_pos(0, 3));
-        assert_eq!(g.tiles, vec![
-            5,  1,  2,  3,
-            9,  6,  7,  4,
-            13, 10, 11, 8,
-            0,  14, 15, 12
-        ]);
-
-        assert!(g.move_by_pos(3, 3));
-        assert_eq!(g.tiles, vec![
-            5,  1,  2,  3,
-            9,  6,  7,  4,
-            13, 10, 11, 8,
-            14, 15, 12, 0
-        ]);
-    }
-
-    #[test]
-    fn invalid_move_does_not_modify_tiles() {
-        let mut g = Grid::new(3);
-        let original_tiles = g.tiles.clone();
-
-        assert!(!g.move_by_pos(0, 0));
-        assert_eq!(g.tiles, original_tiles);
-
-        assert!(!g.move_by_pos(1, 0));
-        assert_eq!(g.tiles, original_tiles);
-
-        assert!(!g.move_by_pos(0, 1));
-        assert_eq!(g.tiles, original_tiles);
-
-        assert!(!g.move_by_pos(1, 1));
-        assert_eq!(g.tiles, original_tiles);
-    }
-
-    #[test]
-    fn value_sorted_pairs() {
-        let mut g = Grid::new(3);
-        assert_eq!(g.value_sorted_pairs(), vec![
-            (0, &1), (1, &2), (2, &3),
-            (3, &4), (4, &5), (5, &6),
-            (6, &7), (7, &8), (8, &0)
-        ]);
-
-        g.r#move(2);
-        g.r#move(1);
-
-        assert_eq!(g.value_sorted_pairs(), vec![
-            (0, &1), (2, &2), (5, &3),
-            (3, &4), (4, &5), (8, &6),
-            (6, &7), (7, &8), (1, &0)
-        ]);
     }
 }
