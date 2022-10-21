@@ -3,11 +3,11 @@
 
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
-use round::Round;
+use board::Board;
 
 mod grid;
-mod round;
-mod ui;
+mod board;
+mod game_field;
 
 enum GameStatus {
     InMenu,
@@ -17,7 +17,7 @@ enum GameStatus {
 
 #[function_component(App)]
 fn app() -> Html {
-    let status = use_state(|| GameStatus::Win);
+    let status = use_state(|| GameStatus::InMenu);
     let game_size = use_state(|| 4);
     let win_moves = use_state(|| 0u32);
 
@@ -62,21 +62,24 @@ fn app() -> Html {
         GameStatus::InMenu => {
             html! {
                 <div class="game game-menu">
-                    <input
-                        type="number"
-                        min="3"
-                        max="8"
-                        value={(*game_size).to_string()}
-                        oninput={handle_size_change}
-                    />
+                    <label>
+                        {"Size: "}
+                        <input
+                            type="number"
+                            min="3"
+                            max="8"
+                            value={(*game_size).to_string()}
+                            oninput={handle_size_change}
+                        />
+                    </label>
                     <button onclick={handle_start}>{ "Start" }</button>
                 </div>
             }
         }
         GameStatus::Playing => {
             html! {
-                <div class="game game-round">
-                    <Round size={*game_size} onwin={handle_win} onexit={handle_goto_menu} />
+                <div class="game game-board">
+                    <Board size={*game_size} onwin={handle_win} onexit={handle_goto_menu} />
                 </div>
             }
         }

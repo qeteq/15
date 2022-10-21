@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 use crate::grid::Grid;
-use crate::ui::game_field::GameField;
+use crate::game_field::GameField;
 
 type MovesCount = u32;
 
@@ -10,7 +10,7 @@ pub enum Msg {
     Move(usize),
 }
 
-pub struct Round {
+pub struct Board {
     moves: MovesCount,
     grid: Grid,
 }
@@ -22,7 +22,7 @@ pub struct Props {
     pub onexit: Callback<()>
 }
 
-impl Component for Round {
+impl Component for Board {
     type Message = Msg;
     type Properties = Props;
 
