@@ -3,7 +3,7 @@ use std::cmp::Ordering;
 use yew::prelude::*;
 
 
-pub struct Grid {
+pub struct GameField {
     moves: u32,
 }
 
@@ -25,7 +25,7 @@ fn sorted_tiles_by_value<'a>(tiles: &'a Vec<usize>) -> Vec<(usize, &'a usize)> {
     return pairs;
 }
 
-impl Component for Grid {
+impl Component for GameField {
     type Message = ();
     type Properties = Props;
 

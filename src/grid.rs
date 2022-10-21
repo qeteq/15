@@ -13,25 +13,39 @@ fn range_inclusive(from: usize, to: usize) -> Vec<usize> {
     }
 }
 
+fn tile_cmp(&a: &usize, &b: &usize) -> Option<Ordering> {
+    if a == b { return Some(Ordering::Equal) }
+    if a == 0 { return Some(Ordering::Greater) }
+    if b == 0 { return Some(Ordering::Less) }
+    return Some(a.cmp(&b));
+}
+
 impl Grid {
     pub fn new(size: usize) -> Grid {
         let tiles: Vec<usize> = vec![0; size * size];
-        let mut grid = Grid { size, tiles };
+        let mut grid = Self { size, tiles };
         grid.reset_tiles();
         return grid;
     }
 
+    pub fn shuffled(size: usize) -> Grid {
+        let mut grid = Self::new(size);
+        grid.shuffle();
+        return grid;
+    }
+
     pub fn tiles(&self) -> &Vec<usize> {
-        self.tiles.as_ref()
+        &self.tiles
+    }
+
+    pub fn is_solved(&self) -> bool {
+        self.tiles.is_sorted_by(tile_cmp)
     }
 
     pub fn value_sorted_pairs(&self) -> Vec<(usize, &usize)> {
         let mut pairs: Vec<_> = self.tiles.iter().enumerate().collect();
         pairs.sort_by(|&(_, a), &(_, b)| {
-            if a == b { return Ordering::Equal }
-            if *a == 0 { return Ordering::Greater }
-            if *b == 0 { return Ordering::Less }
-            return a.cmp(b);
+            return tile_cmp(a, b).unwrap_or(Ordering::Equal)
         });
         return pairs;
     }

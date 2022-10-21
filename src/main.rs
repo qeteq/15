@@ -1,96 +1,95 @@
 #![feature(array_windows)]
+#![feature(is_sorted)]
 
-use grid::Grid;
-use web_sys::HtmlSelectElement;
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use round::Round;
 
 mod grid;
+mod round;
 mod ui;
 
-enum Msg {
-    Start,
-    Move(usize),
-    ChangeSize(usize),
+enum GameStatus {
+    InMenu,
+    Playing,
+    Win,
 }
 
-struct App {
-    moves: u32,
-    grid: Grid,
-    msg: String,
-}
+#[function_component(App)]
+fn app() -> Html {
+    let status = use_state(|| GameStatus::Win);
+    let game_size = use_state(|| 4);
+    let win_moves = use_state(|| 0u32);
 
-impl Component for App {
-    type Message = Msg;
-    type Properties = ();
+    let handle_win = {
+        let status = status.clone();
+        let win_moves = win_moves.clone();
+        Callback::from(move |moves| {
+            win_moves.set(moves);
+            status.set(GameStatus::Win);
+        })
+    };
 
-    fn create(_: &Context<Self>) -> Self {
-        let mut grid = Grid::new(4);
-        grid.shuffle();
-        Self { grid, moves: 0, msg: "".into() }
-    }
+    let handle_start = {
+        let status = status.clone();
+        Callback::from(move |_| {
+            status.set(GameStatus::Playing);
+        })
+    };
 
-    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            Msg::Start => {
-                self.moves = 0;
-                self.grid.shuffle();
-            }
-            Msg::Move(i) => {
-                if self.grid.r#move(i) {
-                    self.moves += 1;
-                }
-            }
-            Msg::ChangeSize(size) => {
-                self.grid = Grid::new(size);
-                self.grid.shuffle();
-                self.moves = 0;
-            }
-        }
-        true
-    }
+    let handle_goto_menu = {
+        let status = status.clone();
+        Callback::from(move |_| {
+            status.set(GameStatus::InMenu);
+        })
+    };
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let g = &self.grid;
-        let link = ctx.link();
-
-        let l = link.clone();
-        let handle_size_change: Callback<Event> = (move |e: Event| {
-            let target: HtmlSelectElement = e.target_unchecked_into();
+    let handle_size_change = {
+        let game_size = game_size.clone();
+        Callback::from(move |e: InputEvent| {
+            let target: HtmlInputElement = e.target_unchecked_into();
             let parsed = target.value().parse::<usize>();
 
-            if let Ok(size) = parsed {
-                l.send_message(Msg::ChangeSize(size));
+            if let Ok(mut size) = parsed {
+                if size > 8 { size = 8 }
+                if size < 3 { size = 3 }
+                game_size.set(size);
             }
-        }).into();
+        })
+    };
 
-        let handle_start_click = ctx.link().callback(|_| Msg::Start);
-
-        return html! {
-            <div>
-                <header>
-                    <h1>{ "15" }</h1>
-                    <label>
-                        { "Size: " }
-                        <select onchange={handle_size_change}>
-                            <option value=3>{ "3x3" }</option>
-                            <option value=4 selected=true>{ "4x4" }</option>
-                            <option value=5>{ "5x5" }</option>
-                            <option value=6>{ "6x6" }</option>
-                            <option value=7>{ "7x7" }</option>
-                            <option value=8>{ "8x8" }</option>
-                        </select>
-                    </label>
-                    <button onclick={handle_start_click}>{ "Start" }</button>
-                    {"Moves: "} {self.moves}
-                </header>
-                <ui::grid::Grid
-                    size={self.grid.size()}
-                    tiles={Box::new(self.grid.tiles().clone())}
-                    on_tile_click={ctx.link().callback(|i| Msg::Move(i))}
-                />
-            </div>
-        };
+    match *status {
+        GameStatus::InMenu => {
+            html! {
+                <div class="game game-menu">
+                    <input
+                        type="number"
+                        min="3"
+                        max="8"
+                        value={(*game_size).to_string()}
+                        oninput={handle_size_change}
+                    />
+                    <button onclick={handle_start}>{ "Start" }</button>
+                </div>
+            }
+        }
+        GameStatus::Playing => {
+            html! {
+                <div class="game game-round">
+                    <Round size={*game_size} onwin={handle_win} onexit={handle_goto_menu} />
+                </div>
+            }
+        }
+        GameStatus::Win => {
+            html! {
+                <div class="game game-win">
+                    <h1>{ format!("You won after {} moves!", *win_moves) }</h1>
+                    <button onclick={handle_goto_menu.reform(|_| {})}>{ "Back to menu" }</button>
+                </div>
+            }
+        }
     }
+
 }
 
 fn main() {
