@@ -9,30 +9,29 @@ pub struct Props {
     pub on_tile_click: Callback<usize>,
 }
 
-fn sorted_tiles_by_value<'a>(tiles: &'a Vec<usize>) -> Vec<(usize, &'a usize)> {
+fn sorted_tiles_by_number(tiles: &Vec<usize>) -> Vec<(usize, &usize)> {
     let mut pairs: Vec<_> = tiles.iter().enumerate().collect();
     pairs.sort_by(|&(_, a), &(_, b)| {
         if a == b {
-            return Ordering::Equal;
+            Ordering::Equal
+        } else if *a == 0 {
+            Ordering::Greater
+        } else if *b == 0 {
+            Ordering::Less
+        } else {
+            a.cmp(b)
         }
-        if *a == 0 {
-            return Ordering::Greater;
-        }
-        if *b == 0 {
-            return Ordering::Less;
-        }
-        return a.cmp(b);
     });
     return pairs;
 }
 
 #[function_component(GameField)]
 pub fn game_field(props: &Props) -> Html {
-    let pairs = sorted_tiles_by_value(&props.tiles);
+    let pairs = sorted_tiles_by_number(&props.tiles);
     let size = props.size;
     let tiles: Html = pairs
-        .iter()
-        .map(|&(i, n)| {
+        .into_iter()
+        .map(|(i, n)| {
             let x = i % size;
             let y = i / size;
             let nx = match n {

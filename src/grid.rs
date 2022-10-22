@@ -30,12 +30,6 @@ impl Grid {
     pub fn new(size: usize) -> Grid {
         let tiles: Vec<usize> = vec![0; size * size];
         let mut grid = Self { size, tiles };
-        grid.reset_tiles();
-        return grid;
-    }
-
-    pub fn shuffled(size: usize) -> Grid {
-        let mut grid = Self::new(size);
         grid.shuffle();
         return grid;
     }
@@ -44,12 +38,12 @@ impl Grid {
         &self.tiles
     }
 
-    pub fn is_solved(&self) -> bool {
-        self.tiles.is_sorted_by(tile_cmp)
-    }
-
     pub fn size(&self) -> usize {
         self.size
+    }
+
+    pub fn is_solved(&self) -> bool {
+        self.tiles.is_sorted_by(tile_cmp)
     }
 
     fn reset_tiles(&mut self) {
@@ -73,21 +67,20 @@ impl Grid {
         }
     }
 
-    fn index_position(&self, index: usize) -> (usize, usize) {
+    fn index_to_position(&self, index: usize) -> (usize, usize) {
         let x = index % self.size;
         let y = index / self.size;
         return (x, y);
     }
 
     fn zero_position(&self) -> (usize, usize) {
-        let mut zero_index: usize = 0;
+        let zero_index = self
+            .tiles
+            .iter()
+            .position(|&x| x == 0)
+            .expect("Zero must exist in the grid");
 
-        for i in 0..self.tiles.len() {
-            if self.tiles[i] == 0 {
-                zero_index = i;
-            }
-        }
-        return self.index_position(zero_index);
+        return self.index_to_position(zero_index);
     }
 
     pub fn r#move(&mut self, from: usize) -> bool {
@@ -97,12 +90,12 @@ impl Grid {
             return false;
         }
 
-        let from_pos = self.index_position(from);
+        let from_pos = self.index_to_position(from);
         let zero_pos = self.zero_position();
         if from_pos.0 != zero_pos.0 && from_pos.1 != zero_pos.1 {
             return false;
         }
-        if from_pos.0 == zero_pos.0 && from_pos.1 == zero_pos.1 {
+        if from_pos == zero_pos {
             return false;
         }
 
@@ -198,13 +191,13 @@ mod tests {
     fn index_position_is_correct() {
         let g = Grid::new(4);
 
-        assert_eq!(g.index_position(0), (0, 0));
-        assert_eq!(g.index_position(1), (1, 0));
-        assert_eq!(g.index_position(2), (2, 0));
-        assert_eq!(g.index_position(3), (3, 0));
-        assert_eq!(g.index_position(4), (0, 1));
-        assert_eq!(g.index_position(9), (1, 2));
-        assert_eq!(g.index_position(15), (3, 3));
+        assert_eq!(g.index_to_position(0), (0, 0));
+        assert_eq!(g.index_to_position(1), (1, 0));
+        assert_eq!(g.index_to_position(2), (2, 0));
+        assert_eq!(g.index_to_position(3), (3, 0));
+        assert_eq!(g.index_to_position(4), (0, 1));
+        assert_eq!(g.index_to_position(9), (1, 2));
+        assert_eq!(g.index_to_position(15), (3, 3));
     }
 
     #[test]

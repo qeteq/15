@@ -28,7 +28,7 @@ impl Component for Board {
 
     fn create(ctx: &Context<Self>) -> Self {
         Self {
-            grid: Grid::shuffled(ctx.props().size),
+            grid: Grid::new(ctx.props().size),
             moves: 0,
         }
     }
@@ -38,18 +38,21 @@ impl Component for Board {
             Msg::Reset => {
                 self.moves = 0;
                 self.grid.shuffle();
+                true
             }
             Msg::Move(i) => {
-                if self.grid.r#move(i) {
-                    self.moves += 1;
+                let moved = self.grid.r#move(i);
+                if moved {
+                    if self.grid.is_solved() {
+                        ctx.props().onwin.emit(self.moves);
+                        self.moves = 0;
+                    } else {
+                        self.moves += 1;
+                    }
                 }
-                if self.grid.is_solved() {
-                    ctx.props().onwin.emit(self.moves);
-                    self.moves = 0;
-                }
+                moved
             }
         }
-        true
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
