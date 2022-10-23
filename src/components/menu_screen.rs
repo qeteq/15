@@ -12,13 +12,14 @@ pub struct Props {
 pub fn menu_screen(props: &Props) -> Html {
     let onsizechange = props.onsizechange.to_owned();
 
-    let handle_size_change = Callback::from(move |evt: InputEvent| {
-        let input: HtmlInputElement = evt.target_unchecked_into();
-        let result = input.value().parse::<usize>();
-        if let Ok(n) = result {
+    let handle_size_change = {
+        let size = props.size.clone();
+        Callback::from(move |evt: InputEvent| {
+            let input: HtmlInputElement = evt.target_unchecked_into();
+            let n = input.value().parse::<usize>().unwrap_or(size);
             onsizechange.emit(n);
-        }
-    });
+        })
+    };
 
     html! {
         <div class="game game-menu">
