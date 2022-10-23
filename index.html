@@ -8,11 +8,24 @@
             body {
                 margin: 0;
                 font-family: sans-serif;
+                color: #e7eaf5;
+                background-color: #2f352f;
+            }
+            input {
+                color: #e7eaf5;
+                background-color: #241f1d;
+                border: 1px solid #aaaac9;
+            }
+            button {
+                color: #e7eaf5;
+                background-color: #241f1d;
+                border: 2px solid #aaaac9;
+                border-radius: 4px;
+                cursor: pointer;
             }
             .game {
                 width: 500px;
                 min-height: 540px;
-                border: 2px solid wheat;
                 padding: 46px;
                 margin: 40px auto;
             }
@@ -51,16 +64,23 @@
                 -webkit-text-stroke: 3px #000;
                 text-stroke: 3px #000;
             }
+            .game-win h1::selection {
+                color: #f0f;
+                background: #ff0a;
+                -webkit-text-stroke: 1px #300;
+                text-stroke: 3px #300;
+            }
             .grid {
                 position: relative;
                 width: calc(var(--s) * 100px);
                 aspect-ratio: 1/1;
                 outline: 1px solid black;
                 user-select: none;
-                background-color: lightgray;
+                background-color: rgb(0, 0, 0);
                 transform-origin: top left;
                 transform: scale(calc(4 / var(--s)));
-                box-shadow: inset 2px 2px 8px #0009;
+                box-shadow: inset 0px 0px 8px #fff4, 0 0 20px 4px #000a;
+                border-radius: 4px;
             }
             .tile {
                 --size: 100px;
@@ -73,13 +93,12 @@
                 box-sizing: border-box;
                 width: var(--size);
                 height: var(--size);
-                border: 1px solid black;
                 font-size: 60px;
                 background: url('https://media.tenor.com/WHyUIiHwjXIAAAAC/vat-cat.gif');
                 background-size: calc(var(--s) * var(--size))
                     calc(var(--s) * var(--size));
-                background-position: calc(-1 * var(--size) * var(--nx) - 1px)
-                    calc(-1 * var(--size) * var(--ny) - 1px);
+                background-position: calc(-1 * var(--size) * var(--nx))
+                    calc(-1 * var(--size) * var(--ny));
                 font-weight: bold;
                 color: white;
                 -webkit-text-stroke: 3px #000;
@@ -88,7 +107,7 @@
                 transform: translateX(calc(var(--x) * 100%))
                     translateY(calc(var(--y) * 100%)) scale(0.95);
                 border-radius: 4px;
-                box-shadow: 1px 1px 4px #0009;
+                box-shadow: 1px 1px 4px #fff4;
             }
             .tile[data-n='0'] {
                 border: none;
