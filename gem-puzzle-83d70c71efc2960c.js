@@ -601,7 +601,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('gem-puzzle-ddcfb27737f2bcce_bg.wasm', import.meta.url);
+        input = new URL('gem-puzzle-83d70c71efc2960c_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
