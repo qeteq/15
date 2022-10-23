@@ -25,8 +25,8 @@ fn sorted_tiles_by_number(tiles: &Vec<usize>) -> Vec<(usize, &usize)> {
     return pairs;
 }
 
-#[function_component(GameField)]
-pub fn game_field(props: &Props) -> Html {
+#[function_component(Board)]
+pub fn board(props: &Props) -> Html {
     let pairs = sorted_tiles_by_number(&props.tiles);
     let size = props.size;
     let tiles: Html = pairs

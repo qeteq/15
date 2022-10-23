@@ -1,13 +1,12 @@
 #![feature(array_windows)]
 #![feature(is_sorted)]
 
-use board::Board;
-use web_sys::HtmlInputElement;
-use yew::prelude::*;
+use yew::{function_component, html, use_state, Callback};
+
+use components::{game_screen::GameScreen, menu_screen::MenuScreen, win_screen::WinScreen};
 
 mod board;
-mod game_field;
-mod grid;
+mod components;
 
 enum GameStatus {
     InMenu,
@@ -46,55 +45,28 @@ fn app() -> Html {
 
     let handle_size_change = {
         let game_size = game_size.clone();
-        Callback::from(move |e: InputEvent| {
-            let target: HtmlInputElement = e.target_unchecked_into();
-            let parsed = target.value().parse::<usize>();
-
-            if let Ok(mut size) = parsed {
-                if size > 8 {
-                    size = 8
-                }
-                if size < 3 {
-                    size = 3
-                }
-                game_size.set(size);
+        Callback::from(move |newsize: usize| {
+            let mut size = newsize;
+            if newsize > 8 {
+                size = 8
             }
+            if newsize < 3 {
+                size = 3
+            }
+            game_size.set(size);
         })
     };
 
     match *status {
-        GameStatus::InMenu => {
-            html! {
-                <div class="game game-menu">
-                    <label>
-                        {"Size: "}
-                        <input
-                            type="number"
-                            min="3"
-                            max="8"
-                            value={(*game_size).to_string()}
-                            oninput={handle_size_change}
-                        />
-                    </label>
-                    <button onclick={handle_start}>{ "Start" }</button>
-                </div>
-            }
-        }
-        GameStatus::Playing => {
-            html! {
-                <div class="game game-board">
-                    <Board size={*game_size} onwin={handle_win} onexit={handle_goto_menu} />
-                </div>
-            }
-        }
-        GameStatus::Win => {
-            html! {
-                <div class="game game-win">
-                    <h1>{ format!("You won after {} moves!", *win_moves) }</h1>
-                    <button onclick={handle_goto_menu.reform(|_| {})}>{ "Back to menu" }</button>
-                </div>
-            }
-        }
+        GameStatus::InMenu => html! {
+            <MenuScreen size={*game_size} onstart={handle_start} onsizechange={handle_size_change} />
+        },
+        GameStatus::Playing => html! {
+            <GameScreen size={*game_size} onwin={handle_win} onexit={handle_goto_menu} />
+        },
+        GameStatus::Win => html! {
+            <WinScreen moves={*win_moves} onback={handle_goto_menu} />
+        },
     }
 }
 
