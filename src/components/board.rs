@@ -1,11 +1,10 @@
 use std::cmp::Ordering;
-
-use yew::prelude::*;
+use yew::{function_component, html, Callback, Html, Properties};
 
 #[derive(PartialEq, Properties)]
 pub struct Props {
     pub size: usize,
-    pub tiles: Box<Vec<usize>>,
+    pub tiles: Vec<usize>,
     pub on_tile_click: Callback<usize>,
 }
 

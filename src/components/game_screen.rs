@@ -1,4 +1,4 @@
-use yew::prelude::*;
+use yew::{html, Callback, Component, Context, Html, Properties};
 
 use crate::board::Board;
 use crate::components::board::Board as BoardComponent;
@@ -57,6 +57,10 @@ impl Component for GameScreen {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let handle_reset_click = ctx.link().callback(|_| Msg::Reset);
+
+        // TODO: is there a way to avoid cloning?
+        let tiles = self.board.tiles().clone();
+
         return html! {
             <div class="game game-board">
                 <header style="margin-bottom: 20px">
@@ -66,7 +70,7 @@ impl Component for GameScreen {
                 </header>
                 <BoardComponent
                     size={self.board.size()}
-                    tiles={Box::new(self.board.tiles().clone())}
+                    tiles={tiles}
                     on_tile_click={ctx.link().callback(|i| Msg::Move(i))}
                 />
             </div>
